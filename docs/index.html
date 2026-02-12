@@ -43,6 +43,7 @@
 
     .sidebar .sidebar-nav {
       padding: 0 15px;
+      font-size: 14px;
     }
 
     .sidebar .app-name-link {
@@ -60,7 +61,7 @@
 
     .sidebar ul li a {
       color: var(--text-color-base);
-      font-size: 0.9em;
+      font-size: 14px;
       padding: 3px 10px;
       border-radius: 4px;
       transition: all 0.2s ease;
@@ -74,12 +75,14 @@
       padding-left: 15px;
     }
 
+
     .sidebar ul li.active > a {
       color: var(--theme-color);
       font-weight: 600;
-      border-left: 3px solid var(--theme-color);
+      border-left: none !important;
+      border-right: none !important;
       padding-left: 12px;
-      background-color: rgba(52, 152, 219, 0.05);
+      background-color: rgba(52, 152, 219, 0.1);
     }
 
     .sidebar .search {
@@ -169,14 +172,63 @@
       font-weight: 600;
     }
 
+    /* Ensure strong / folder-label items match <a> styling */
+    .sidebar-nav li > strong,
+    .sidebar-nav li > .folder-label {
+      font-size: 14px;
+      padding: 3px 10px;
+      display: block;
+      line-height: 1.4;
+      color: var(--text-color-base);
+    }
+
     /* Nested sidebar levels */
     .sidebar ul li ul {
-      padding-left: 6px;
+      padding-left: 10px !important;
+      margin-left: 0 !important;
     }
 
     .sidebar ul li ul li a {
-      font-size: 0.85em;
+      font-size: 13px;
       color: var(--text-color-secondary);
+    }
+
+    /* Collapsible sidebar folders */
+    .sidebar-nav li.has-children > a,
+    .sidebar-nav li.has-children > strong,
+    .sidebar-nav li.has-children > .folder-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+
+    .sidebar-nav li.has-children > a .folder-arrow,
+    .sidebar-nav li.has-children > strong .folder-arrow,
+    .sidebar-nav li.has-children > .folder-label .folder-arrow {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      margin-left: 4px;
+      transition: transform 0.2s ease;
+      opacity: 0.5;
+    }
+
+    .sidebar-nav li.has-children > a:hover .folder-arrow,
+    .sidebar-nav li.has-children > strong:hover .folder-arrow,
+    .sidebar-nav li.has-children > .folder-label:hover .folder-arrow {
+      opacity: 0.8;
+    }
+
+    .sidebar-nav li.has-children.collapsed > a .folder-arrow,
+    .sidebar-nav li.has-children.collapsed > strong .folder-arrow,
+    .sidebar-nav li.has-children.collapsed > .folder-label .folder-arrow {
+      transform: rotate(-90deg);
+    }
+
+    .sidebar-nav li.has-children.collapsed > ul {
+      display: none;
     }
 
     /* Hide sub-headings from left sidebar — moved to right TOC */
@@ -537,6 +589,9 @@
       name: '<img src="images/semacode-logo.png" alt="SemaCode" class="sidebar-logo">',
       repo: '',
       loadSidebar: true,
+      alias: {
+        '/.*/_sidebar.md': '/_sidebar.md'
+      },
       subMaxLevel: 0,
       auto2top: true,
       search: {
@@ -705,6 +760,69 @@
         next(html);
       });
       hook.doneEach(function() {
+
+        // Collapsible sidebar folders with arrow
+        (function initCollapsible() {
+          var sidebarNav = document.querySelector('.sidebar-nav');
+          if (!sidebarNav) return;
+          var arrowSvg = '<svg class="folder-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+
+          var items = sidebarNav.querySelectorAll('li');
+          items.forEach(function(li) {
+            // Check for direct child <ul>
+            var hasSubUl = false;
+            for (var i = 0; i < li.children.length; i++) {
+              if (li.children[i].tagName === 'UL') { hasSubUl = true; break; }
+            }
+            if (!hasSubUl) return;
+            if (li.classList.contains('has-children')) return; // already processed
+            li.classList.add('has-children');
+
+            // Find toggle target: first direct child element (a, strong, p)
+            var toggle = null;
+            for (var j = 0; j < li.children.length; j++) {
+              var tag = li.children[j].tagName;
+              if (tag === 'A' || tag === 'STRONG' || tag === 'P' || tag === 'EM') {
+                toggle = li.children[j];
+                break;
+              }
+            }
+
+            // If no element found, wrap the first text node in a <span> as toggle
+            if (!toggle) {
+              for (var k = 0; k < li.childNodes.length; k++) {
+                var node = li.childNodes[k];
+                if (node.nodeType === 3 && node.nodeValue.trim()) {
+                  var span = document.createElement('span');
+                  span.className = 'folder-label';
+                  span.textContent = node.nodeValue.trim();
+                  li.replaceChild(span, node);
+                  toggle = span;
+                  break;
+                }
+              }
+            }
+            if (!toggle) return;
+
+            // Add arrow if not already added
+            if (!toggle.querySelector('.folder-arrow')) {
+              toggle.insertAdjacentHTML('beforeend', arrowSvg);
+            }
+
+            // Click to toggle collapse
+            toggle.addEventListener('click', function(e) {
+              // If it's a link with href, only toggle on arrow area (right 30px)
+              if (toggle.tagName === 'A' && toggle.getAttribute('href') && toggle.getAttribute('href') !== '#') {
+                var rect = toggle.getBoundingClientRect();
+                if (e.clientX < rect.right - 30) return;
+              }
+              e.preventDefault();
+              e.stopPropagation();
+              li.classList.toggle('collapsed');
+            });
+          });
+        })();
+
         // Add home button next to sidebar toggle
         if (!document.querySelector('.sidebar-home-btn')) {
           var homeBtn = document.createElement('button');

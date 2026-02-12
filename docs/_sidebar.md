@@ -1,5 +1,62 @@
-- [Sema Core 快速入门指南](/getting-started)
-  - [基础用法与核心API](/getting-started/basic-usage)
-  - [配置参考](/getting-started/configuration-reference)
-  - [安装与环境配置](/getting-started/installation-setup)
-  - [Sema Core 项目概览与架构](/getting-started/project-overview)
+- [概览](/overview.md)
+  - [架构概述](/overview/architecture)
+  - 快速开始
+  - [安装](/getting-started/installation)
+  - [快速开始](/getting-started/quick-start)
+  - 基本用法
+    - [新增模型](/getting-started/basic-usage/add-new-model)
+    - [配置基础](/getting-started/basic-usage/configuration-basics)
+    - [基础用法](/getting-started/basic-usage/basic-usage)
+    - [MCP使用](/getting-started/basic-usage/mcp-usage)
+    - [技能使用](/getting-started/basic-usage/skill-usage)
+    - [子代理使用](/getting-started/basic-usage/subagent-usage)
+    - [命令使用](/getting-started/basic-usage/command-usage)
+- **核心概念**
+  - Core 架构
+    - [引言：Agent基础](/core-concepts/core-architecture/introduction)
+    - [对话系统](/core-concepts/core-architecture/conversation-system)
+    - [SemaCore - 公共API层](/core-concepts/core-architecture/sema-core-public-api)
+    - [SemaEngine - 业务逻辑](/core-concepts/core-architecture/sema-engine-business-logic)
+    - [工具执行系统](/core-concepts/core-architecture/tool-execution-system)
+    - [管理器层](/core-concepts/core-architecture/manager-layer)
+  - 工具系统
+    - [工具架构](/core-concepts/tool-system/tool-architecture)
+    - [权限系统](/core-concepts/tool-system/permission-system)
+    - [并发与串行执行](/core-concepts/tool-system/concurrent-vs-serial-execution)
+    - [创建自定义工具](/core-concepts/tool-system/creating-custom-tools)
+    - 内置工具
+      - [交互工具AskUserQuestion](/core-concepts/tool-system/built-in-tools/askuserquestiontool)
+      - [终端工具Bash](/core-concepts/tool-system/built-in-tools/bashtool)
+      - [文件编辑工具Edit](/core-concepts/tool-system/built-in-tools/edittool)
+      - [Plan模式切换Agent工具ExitPlanMode](/core-concepts/tool-system/built-in-tools/exitplanmodetool)
+      - [文件搜索工具Glob](/core-concepts/tool-system/built-in-tools/globtool)
+      - [文本搜索工具Grep](/core-concepts/tool-system/built-in-tools/greptool)
+      - [笔记本编辑工具NotebookEdit](/core-concepts/tool-system/built-in-tools/notebookedittool)
+      - [文件读取工具Read](/core-concepts/tool-system/built-in-tools/readtool)
+      - [技能工具Skill](/core-concepts/tool-system/built-in-tools/skilltool)
+      - [子代理工具Task](/core-concepts/tool-system/built-in-tools/tasktool)
+      - [规划工具TodoWrite](/core-concepts/tool-system/built-in-tools/todowritetool)
+      - [文件写入工具Write](/core-concepts/tool-system/built-in-tools/writetool)
+  - 高级用法
+    - [MCP集成](/core-concepts/advanced-topics/mcp-integration)
+    - [计划模式](/core-concepts/advanced-topics/plan-mode)
+    - [Skill支持](/core-concepts/advanced-topics/skill-support)
+    - Sub Agent
+      - [内置子代理](/core-concepts/advanced-topics/sub-agent/built-in-subagents)
+      - [创建子代理](/core-concepts/advanced-topics/sub-agent/creating-custom-subagents)
+  - Event System
+    - [事件总线架构](/core-concepts/event-system/event-bus)
+    - [事件类型总览（会话/消息/工具/权限/代理等）](/core-concepts/event-system/event-catalog)
+  - [配置](/core-concepts/configuration/index)
+  - [持久存储](/core-concepts/persistent-storage/index)
+  - Api 参考
+  - [会话管理](/api-reference/session-management)
+  - [事件处理](/api-reference/event-handling)
+  - [模型管理](/api-reference/model-management)
+  - [配置方法](/api-reference/configuration-methods)
+  - [工具与服务API](/api-reference/tool-and-service-apis)
+- **使用场景**
+  - [MiniCLI](/scenarios/minicli)
+  - [VSCode插件](/scenarios/vscode-extension)
+  - [Code2Skill](/scenarios/code2skill)
+
