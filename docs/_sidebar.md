@@ -1,0 +1,5 @@
+- [Sema Core 快速入门指南](/getting-started)
+  - [基础用法与核心API](/getting-started/basic-usage)
+  - [配置参考](/getting-started/configuration-reference)
+  - [安装与环境配置](/getting-started/installation-setup)
+  - [Sema Core 项目概览与架构](/getting-started/project-overview)
